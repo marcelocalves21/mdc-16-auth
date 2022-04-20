@@ -1,20 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { signIn } from "../utilities/signIn";
+import { Context } from "../store/appContext";
+
 
 export const Home = () => {
+	const {store, actions }= useContext(Context)
 	const history = useHistory()
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-	const signInClicked = async (email, password) => {
-		try{
-			await signIn(email, password)
-			history.push("/demo")
-		}catch{(e) => {
-			alert(e.message)
-		}}
-	}
-	console.log("%cLog In", "font-size: 100px")
+	
 	return(
 		<span >
 		<div className="sidenav">
@@ -46,8 +40,9 @@ export const Home = () => {
 							type="submit" 
 							className="btn btn-primary" 
 							onClick={(e) =>{ 
-							signInClicked(email, password)
-							e.preventDefault()
+								e.preventDefault()
+								actions.signIn(email, password)
+								history.push("/demo")
 							}}>
 								Sign in
 						</button>

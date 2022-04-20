@@ -1,3 +1,5 @@
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -37,6 +39,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			signIn : async (email, password) => {
+				try{
+					await signInWithEmailAndPassword(getAuth(), email, password)
+					.then((userCredential) => {
+				 		console.log(userCredential)
+					})
+				}catch{(error) => {
+				  const errorCode = error.code;
+				  const errorMessage = error.message;
+				  alert(errorMessage)
+				}};
 			}
 		}
 	};
